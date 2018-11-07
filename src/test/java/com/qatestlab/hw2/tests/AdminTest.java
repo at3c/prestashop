@@ -17,14 +17,14 @@ public class AdminTest {
     public static void main(String[] args) throws InterruptedException {
         // create instace "webdriver" for testing website
         WebDriver driver = getWebDriver();
-        //Boolean resultTestAdminPanel = loginAccount(driver); //test login/logout web site
-        Boolean resultTestAdminMenu = testAdminPanelMenu(driver);
+        //Boolean resultTestAdminPanel = adminPanelTest(driver); //test login/logout web site
+        Boolean resultTestAdminMenu = menuPanelTest(driver);
         //System.out.println("Test admin panel: " + resultTestAdminPanel);
         //System.out.println("Test admin panel Menu: " + resultTestAdminMenu);
     }
 
-//    public static Boolean loginAccount(WebDriver driver) throws InterruptedException {
-//        gotoAdminPanel(driver);
+//    public static Boolean adminPanelTest(WebDriver driver) throws InterruptedException {
+//        logIn(driver);
 //        WebElement userMenu = driver.findElement(By.className("employee_name"));
 //        userMenu.click();
 //        Thread.sleep(2000);
@@ -39,10 +39,16 @@ public class AdminTest {
 //        return true;
 //    }
 
-    public static Boolean testAdminPanelMenu(WebDriver driver) throws InterruptedException {
-        gotoAdminPanel(driver);
+    public static Boolean menuPanelTest(WebDriver driver) throws InterruptedException {
+        logIn(driver);
+        Thread.sleep(3000);
         //List<WebElement> menuItems = (ArrayList<WebElement>) driver.findElements(By.partialLinkText("http://prestashop-automation.qatestlab.com.ua/admin147ajyvk0/index.php?controller=Admin"));
-        WebElement elemItem = driver.findElement(By.partialLinkText("controller=Admin"));
+        List<WebElement> elemItems = driver.findElements(By.className("has_submenu"));
+        for (WebElement item: elemItems) {
+            System.out.println(item.getText());
+//            WebElement aItem = item.findElement(By.tagName("a"));
+//            System.out.println(aItem.toString());
+        }
 //        for (WebElement item : menuItems) {
 //            item.click();
 //            Thread.sleep(2000);
@@ -66,7 +72,7 @@ public class AdminTest {
         return new ChromeDriver();
     }
 
-    private static void gotoAdminPanel(WebDriver driver) throws InterruptedException {
+    private static void logIn(WebDriver driver) throws InterruptedException {
         //get web site
         driver.get("http://prestashop-automation.qatestlab.com.ua/admin147ajyvk0/");
         Thread.sleep(2000);
@@ -79,7 +85,7 @@ public class AdminTest {
         passwd.sendKeys("Xcg7299bnSmMuRLp9ITw");
 
         WebElement buttonSubmit = driver.findElement(By.name("submitLogin"));
-        buttonSubmit.click();
+        buttonSubmit.submit();
         Thread.sleep(2000);
     }
 

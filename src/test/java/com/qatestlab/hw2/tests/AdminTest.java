@@ -16,32 +16,31 @@ import java.util.List;
  * version 1.1
  */
 public class AdminTest {
+    private static WebDriver driver;
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         // create instace "webdriver" for testing website
-        WebDriver driver = getWebDriver();
-        adminPanelTest(driver); //test login/logout web site
+        driver = getWebDriver();
+        adminPanelTest(); //test login/logout web site
         System.out.println("Test admin panel was finished");
         driver = getWebDriver();
-        menuPanelTest(driver);
+        menuPanelTest();
         System.out.println("Test admin panel menu was finished");
     }
 
     /**
      * test login as Admin and logout with help admin panel
-     * @param driver  object to use browser as user
-     * @throws InterruptedException
      */
-    public static void adminPanelTest(WebDriver driver) throws InterruptedException {
-        logIn(driver);
+    public static void adminPanelTest() {
+        logIn();
 
         WebElement userMenu = driver.findElement(By.className("employee_name"));
         userMenu.click();
-        Thread.sleep(2000);
+        sleepMyThread(2000);
 
         WebElement logout = driver.findElement(By.id("header_logout"));
         logout.click();
-        Thread.sleep(1000);
+        sleepMyThread(1000);
 
         // close browser
         driver.quit();
@@ -49,12 +48,10 @@ public class AdminTest {
 
     /**
      *  login as Admin and test menu items
-     * @param driver object to use browser as user
-     * @throws InterruptedException
      */
-    public static void menuPanelTest(WebDriver driver) throws InterruptedException {
-        logIn(driver);
-        Thread.sleep(2000);
+    public static void menuPanelTest() {
+        logIn();
+        sleepMyThread(2000);
 
         // initiation ArrayList object with values of menu items
         List<String>  menuItems = new ArrayList<String>(Arrays.asList("Dashboard", "Заказы", "Каталог", "Клиенты", "Служба поддержки",
@@ -64,7 +61,7 @@ public class AdminTest {
         for (String item: menuItems) {
             WebElement elemItems = driver.findElement(By.linkText(item));
             elemItems.click();
-            Thread.sleep(1000);
+            sleepMyThread(1000);
             WebElement titlePage;
             try {
                 titlePage = driver.findElement(By.className("page-title"));
@@ -78,7 +75,7 @@ public class AdminTest {
                 String titlePageBeforeRefresText = titlePage.getText();
                 System.out.println(titlePageBeforeRefresText);
                 driver.navigate().refresh();
-                Thread.sleep(1000);
+                sleepMyThread(1000);
                 WebElement titlePageAfterRefresh = driver.findElement(By.className("page-title"));
 
                 //display results to the console
@@ -95,7 +92,7 @@ public class AdminTest {
     /**
      * method set url to web browser's driver,
      * create connection to browser
-     * @return  Chrome driver object to use browser as user
+     * @return      Chrome driver object to use browser as user
      */
     public static WebDriver getWebDriver() {
         System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "//resources//chromedriver.exe");
@@ -104,13 +101,11 @@ public class AdminTest {
 
     /**
      * Login to a Website as an Admin
-     * @param driver object needed to connection to the web browser
-     * @throws InterruptedException
      */
-    private static void logIn(WebDriver driver) throws InterruptedException {
+    private static void logIn() {
         //get test web site
         driver.get("http://prestashop-automation.qatestlab.com.ua/admin147ajyvk0/");
-        Thread.sleep(2000);
+        sleepMyThread(2000);
 
         //find DOM elements and do actions
         WebElement login = driver.findElement(By.id("email"));
@@ -121,8 +116,19 @@ public class AdminTest {
 
         WebElement buttonSubmit = driver.findElement(By.name("submitLogin"));
         buttonSubmit.submit();
-        Thread.sleep(2000);
+        sleepMyThread(2000);
     }
 
+    /**
+     * pausing execution application
+     * @param time the sleep time to the millisecond
+     */
+    static void sleepMyThread(long time) {
+        try {
+            Thread.sleep(time);
 
+        } catch (InterruptedException e){
+            System.err.println(e.toString());
+        }
+    }
 }

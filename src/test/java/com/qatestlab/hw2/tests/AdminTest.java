@@ -9,10 +9,11 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Class to test web site with admin panel
- * @autor Admin on 08.11.2018.
+ * @autor Sydorenko B. on 08.11.2018.
  * version 1.1
  */
 public class AdminTest {
@@ -20,12 +21,18 @@ public class AdminTest {
 
     public static void main(String[] args) {
         // create instace "webdriver" for testing website
-        driver = getWebDriver();
-        adminPanelTest(); //test login/logout web site
-        System.out.println("Test admin panel was finished");
-        driver = getWebDriver();
-        menuPanelTest();
-        System.out.println("Test admin panel menu was finished");
+//        driver = getWebDriver();
+//        adminPanelTest(); //test login/logout web site
+//        System.out.println("Test admin panel was finished");
+//        driver = getWebDriver();
+//        menuPanelTest();
+//        System.out.println("Test admin panel menu was finished");
+        // run Test from Lecture 3
+        driver = DriverManager.getDriver("chrome");
+
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
+
     }
 
     /**
@@ -95,6 +102,16 @@ public class AdminTest {
      * @return      Chrome driver object to use browser as user
      */
     public static WebDriver getWebDriver() {
+        System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "//resources//chromedriver.exe");
+        return new ChromeDriver();
+    }
+
+    /**
+     * method set url to web browser's driver,
+     * create connection to browser
+     * @return      Chrome driver object to use browser as user
+     */
+    public static WebDriver getWebDriverNew(String browserName) {
         System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "//resources//chromedriver.exe");
         return new ChromeDriver();
     }

@@ -107,16 +107,6 @@ public class AdminTest {
     }
 
     /**
-     * method set url to web browser's driver,
-     * create connection to browser
-     * @return      Chrome driver object to use browser as user
-     */
-    public static WebDriver getWebDriverNew(String browserName) {
-        System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "//resources//chromedriver.exe");
-        return new ChromeDriver();
-    }
-
-    /**
      * Login to a Website as an Admin
      */
     private static void logIn() {

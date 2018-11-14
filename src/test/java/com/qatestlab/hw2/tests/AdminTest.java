@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,8 +14,8 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Class to test web site with admin panel
- * @autor Sydorenko B. on 08.11.2018.
- * version 1.1
+ * @autor Sydorenko B. on 14.11.2018.
+ * version 2.1
  */
 public class AdminTest {
     private static WebDriver driver;
@@ -28,12 +29,34 @@ public class AdminTest {
 //        menuPanelTest();
 //        System.out.println("Test admin panel menu was finished");
         // run Test from Lecture 3
-        driver = DriverManager.getDriver("chrome");
-
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-
-
+        driver = DriverManager.getConfiguredDriver("chrome");
+        categoryTest();
     }
+
+    /**
+     * the test creates a new category and checks its display on the site.
+     */
+    public static void categoryTest() {
+        logInWithImplicitWaits();
+
+        driver.quit();
+    }
+
+    private static void logInWithImplicitWaits() {
+            //get test web site
+            driver.get("http://prestashop-automation.qatestlab.com.ua/admin147ajyvk0/");
+
+            //find DOM elements and do actions
+            WebElement login = driver.findElement(By.id("email"));
+            login.sendKeys("webinar.test@gmail.com");
+
+            WebElement passwd = driver.findElement(By.id("passwd"));
+            passwd.sendKeys("Xcg7299bnSmMuRLp9ITw");
+
+            WebElement buttonSubmit = driver.findElement(By.name("submitLogin"));
+            buttonSubmit.submit();
+    }
+
 
     /**
      * test login as Admin and logout with help admin panel

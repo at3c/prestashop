@@ -18,6 +18,14 @@
                 </configuration>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/resources</directory>
+                <includes>
+                    <include>*.exe</include>
+                </includes>
+            </resource>
+        </resources>
     </build>
 
     <dependencies>

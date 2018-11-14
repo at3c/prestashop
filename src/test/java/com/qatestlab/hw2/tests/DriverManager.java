@@ -6,7 +6,6 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 
-import java.beans.EventHandler;
 import java.io.File;
 import java.util.concurrent.TimeUnit;
 
@@ -33,19 +32,19 @@ public class DriverManager {
             case "firefox":
                 System.setProperty(
                         "webdriver.gecko.driver",
-                        new File(DriverManager.class.getResource("/resources/geckodriver.exe").getFile()).getPath());
+                        new File(DriverManager.class.getResource("/geckodriver.exe").getFile()).getPath());
                 return new FirefoxDriver();
             case "ie":
             case "internet explorer":
                 System.setProperty(
                         "webdriver.ie.driver",
-                        new File(DriverManager.class.getResource("/resources/IEDriverServer.exe").getFile()).getPath());
+                        new File(DriverManager.class.getResource("/IEDriverServer.exe").getFile()).getPath());
                 return new InternetExplorerDriver();
             case "chrome":
             default:
                 System.setProperty(
                         "webdriver.chrome.driver",
-                        new File(DriverManager.class.getResource("/resources/chromedriver.exe").getFile()).getPath());
+                        new File(DriverManager.class.getResource("/chromedriver.exe").getFile()).getPath());
                 return new ChromeDriver();
         }
     }
@@ -69,8 +68,6 @@ public class DriverManager {
         driver.manage().window().maximize();
         return driver;
     }
-
-
 }
 
 

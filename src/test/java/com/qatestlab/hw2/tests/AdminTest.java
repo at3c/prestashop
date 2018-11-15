@@ -5,8 +5,12 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -28,6 +32,7 @@ public class AdminTest {
 //        driver = getWebDriver();
 //        menuPanelTest();
 //        System.out.println("Test admin panel menu was finished");
+
         // run Test from Lecture 3
         driver = DriverManager.getConfiguredDriver("chrome");
         categoryTest();
@@ -37,26 +42,51 @@ public class AdminTest {
      * the test creates a new category and checks its display on the site.
      */
     public static void categoryTest() {
-        logInWithImplicitWaits();
+        //get test web site
+        driver.get("http://prestashop-automation.qatestlab.com.ua/admin147ajyvk0/");
+        WebDriverWait webDriverWaiter = new WebDriverWait(driver, 10) ;
+
+        //find DOM elements and do actions
+        WebElement login = driver.findElement(By.id("email"));
+        login.sendKeys("webinar.test@gmail.com");
+
+        WebElement passwd = driver.findElement(By.id("passwd"));
+        passwd.sendKeys("Xcg7299bnSmMuRLp9ITw");
+
+        WebElement buttonSubmit = driver.findElement(By.name("submitLogin"));
+        buttonSubmit.submit();
+
+        WebElement catalog = driver.findElement(By.xpath("//li[@id='subtab-AdminCatalog']/a"));
+        WebElement categorySubCatalog = driver.findElement(By.cssSelector("li#subtab-AdminCategories>a"));
+
+        Actions actions = new Actions(driver);
+        actions.moveToElement(catalog).pause(Duration.ofSeconds(2)).click(categorySubCatalog).build().perform();
+
+        WebElement addCategory = driver.findElement(By.cssSelector("a#page-header-desc-category-new_category[title='Добавить категорию']"));
+        addCategory.click();
+
+        WebElement inputName = driver.findElement(By.id("name_1"));
+        inputName.sendKeys("New Category");
+        inputName.submit();
+        driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+        webDriverWaiter.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".alert-success")));
+
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
+        WebElement buttonCategoryBack = driver.findElement(By.id("desc-category-back"));
+        buttonCategoryBack.click();
+
+        WebElement inputCategoryFiltrName = driver.findElement(By.cssSelector("input.filter[name='categoryFilter_name']"));
+        inputCategoryFiltrName.sendKeys("New Category");
+        inputCategoryFiltrName.submit();
+
+        driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+        webDriverWaiter.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//td[contains(.,'New Category')]")));
 
         driver.quit();
+
+        System.out.println("test finish");
     }
-
-    private static void logInWithImplicitWaits() {
-            //get test web site
-            driver.get("http://prestashop-automation.qatestlab.com.ua/admin147ajyvk0/");
-
-            //find DOM elements and do actions
-            WebElement login = driver.findElement(By.id("email"));
-            login.sendKeys("webinar.test@gmail.com");
-
-            WebElement passwd = driver.findElement(By.id("passwd"));
-            passwd.sendKeys("Xcg7299bnSmMuRLp9ITw");
-
-            WebElement buttonSubmit = driver.findElement(By.name("submitLogin"));
-            buttonSubmit.submit();
-    }
-
 
     /**
      * test login as Admin and logout with help admin panel

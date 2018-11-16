@@ -56,11 +56,15 @@ public class AdminTest {
         WebElement buttonSubmit = driver.findElement(By.name("submitLogin"));
         buttonSubmit.submit();
 
-        WebElement catalog = driver.findElement(By.xpath("//li[@id='subtab-AdminCatalog']/a"));
-        WebElement categorySubCatalog = driver.findElement(By.cssSelector("li#subtab-AdminCategories>a"));
+        WebElement catalog = webDriverWaiter.until(
+                ExpectedConditions.presenceOfElementLocated(By.xpath("//li[@id='subtab-AdminCatalog']/a")));
 
         Actions actions = new Actions(driver);
-        actions.moveToElement(catalog).pause(Duration.ofSeconds(2)).click(categorySubCatalog).build().perform();
+        actions.moveToElement(catalog).build().perform();
+
+        WebElement categorySubCatalog = webDriverWaiter.until(
+                ExpectedConditions.elementToBeClickable(By.cssSelector("li#subtab-AdminCategories>a")));
+        categorySubCatalog.click();
 
         WebElement addCategory = driver.findElement(By.cssSelector("a#page-header-desc-category-new_category[title='Добавить категорию']"));
         addCategory.click();

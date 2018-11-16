@@ -29,6 +29,7 @@ public class DriverManager {
      */
     public static WebDriver getDriver(String browserName) {
         switch(browserName.toLowerCase()) {
+            case "ff":
             case "firefox":
                 System.setProperty(
                         "webdriver.gecko.driver",

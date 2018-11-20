@@ -10,7 +10,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -68,9 +67,9 @@ public class AdminTest {
 
         WebElement addCategory = driver.findElement(By.cssSelector("a#page-header-desc-category-new_category[title='Добавить категорию']"));
         addCategory.click();
-
+        String categoryName = "SBV_" + getCategory();
         WebElement inputName = driver.findElement(By.id("name_1"));
-        inputName.sendKeys("New Category");
+        inputName.sendKeys(categoryName);
         inputName.submit();
         driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
         webDriverWaiter.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".alert-success")));
@@ -81,11 +80,11 @@ public class AdminTest {
         buttonCategoryBack.click();
 
         WebElement inputCategoryFiltrName = driver.findElement(By.cssSelector("input.filter[name='categoryFilter_name']"));
-        inputCategoryFiltrName.sendKeys("New Category");
+        inputCategoryFiltrName.sendKeys(categoryName);
         inputCategoryFiltrName.submit();
 
         driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
-        webDriverWaiter.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//td[contains(.,'New Category')]")));
+        webDriverWaiter.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//td[contains(.," + categoryName + ")]")));
 
         driver.quit();
 
@@ -194,5 +193,14 @@ public class AdminTest {
         } catch (InterruptedException e){
             System.err.println(e.toString());
         }
+    }
+
+    public static String getCategory() {
+        String symbols = "qwerty";
+        StringBuilder randString = new StringBuilder();
+        int count = (int)(Math.random()*10);
+        for(int i=0;i<count;i++)
+            randString.append(symbols.charAt((int)(Math.random()*symbols.length())));
+        return String.valueOf(randString);
     }
 }

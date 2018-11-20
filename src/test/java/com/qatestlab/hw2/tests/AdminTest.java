@@ -22,6 +22,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class AdminTest {
     private static WebDriver driver;
+    private static WebDriverWait webDriverWaiter;
 
     public static void main(String[] args) {
         // create instace "webdriver" for testing website
@@ -34,6 +35,7 @@ public class AdminTest {
 
         // run Test from Lecture 3
         driver = DriverManager.getConfiguredDriver("chrome");
+        webDriverWaiter = new WebDriverWait(driver, 10);
         categoryTest();
     }
 
@@ -43,7 +45,6 @@ public class AdminTest {
     public static void categoryTest() {
         //get test web site
         driver.get("http://prestashop-automation.qatestlab.com.ua/admin147ajyvk0/");
-        WebDriverWait webDriverWaiter = new WebDriverWait(driver, 10) ;
 
         //find DOM elements and do actions
         WebElement login = driver.findElement(By.id("email"));
@@ -65,16 +66,14 @@ public class AdminTest {
                 ExpectedConditions.elementToBeClickable(By.cssSelector("li#subtab-AdminCategories>a")));
         categorySubCatalog.click();
 
-        WebElement addCategory = driver.findElement(By.cssSelector("a#page-header-desc-category-new_category[title='Добавить категорию']"));
+        WebElement addCategory = driver.findElement(By.cssSelector("a#page-header-desc-category-new_category"));
         addCategory.click();
         String categoryName = "SBV_" + getCategory();
         WebElement inputName = driver.findElement(By.id("name_1"));
         inputName.sendKeys(categoryName);
         inputName.submit();
-        driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
-        webDriverWaiter.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".alert-success")));
 
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        webDriverWaiter.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".alert-success")));
 
         WebElement buttonCategoryBack = driver.findElement(By.id("desc-category-back"));
         buttonCategoryBack.click();
